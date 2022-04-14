@@ -12,7 +12,7 @@
 </head>
 <body>
 <%
-Map<String Object> map = new HashMap<>();
+Map<String, Object> map = new HashMap<>();
 
 map.put("list",Arrays.asList("tesla","kia"));
 map.put("cars",new Car("hyundai",3000));
