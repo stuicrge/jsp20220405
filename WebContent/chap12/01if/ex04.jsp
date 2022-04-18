@@ -13,7 +13,7 @@
 <title>Insert title here</title>
 </head>
 <body>		
-	<c:if test="${param.age>=20 }">
+	<c:if test="${param.age>=20 }" var = "canWatch">
 	<h1>관람가능</h1>
 	</c:if>
 	<c:if test="${param.age<20 }">
