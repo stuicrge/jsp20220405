@@ -6,3 +6,7 @@
 WebContent/META-INF/MANIFEST.MF
 /bin/
 *.jar
+WebContent/chap11/05elobject/ex09.jsp
+*.jsp
+WebContent/chap11/05elobject/ex09.jsp
+*.jsp

@@ -15,7 +15,7 @@
 <h1>header el 기본객체: Map&lt;String, Cookie&gt;</h1>
 <%
 Cookie cookie = new Cookie("cookie1","value1");
-Cookie cookie2 = new Cookie("cookie2","value2");
+Cookie cookie2 = new Cookie("my-cookie","value2");
 
 response.addCookie(cookie);
 response.addCookie(cookie2);
@@ -25,6 +25,7 @@ response.addCookie(cookie2);
 <hr />
 <p>${cookie.cookie1.value }</p>
 <p>${cookie.cookie1.name }</p>
+<p>${cookie["my-cookie"].value }</p>
 <p>${cookie["my-cookie"].name }</p>
 </body>
 </html>
