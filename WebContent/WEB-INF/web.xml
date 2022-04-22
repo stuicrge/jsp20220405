@@ -98,14 +98,7 @@
   	<url-pattern>/s3/servlet06</url-pattern>
   </servlet-mapping>
   
-  
-  <servlet-mapping>
-  	<servlet-name>S4Servlet01</servlet-name>
-  	<!-- <url-pattern>/s4/servlet01</url-pattern> -->
-  	<!-- <url-pattern>/s4/url1/url2/*</url-pattern> -->
-  	<!-- <url-pattern>*.do</url-pattern> -->
-  	<url-pattern>/</url-pattern>
-  </servlet-mapping>
+ 
   
   <servlet>
   	<servlet-name>S4Servlet02</servlet-name>
