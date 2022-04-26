@@ -21,5 +21,6 @@ SELECT * FROM Products;
 UPDATE Products
 SET Price = Price+2;
 
+SELECT * FROM Employees;
     
 
