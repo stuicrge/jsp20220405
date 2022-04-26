@@ -4,7 +4,30 @@ public class Employee {
 	private String firstName;
 	private String lastName;
 	private String birthDate;
+	private String Photo;
+	private String Notes;
+	private int EmployeeID;
 	
+	
+	
+	public String getPhoto() {
+		return Photo;
+	}
+	public void setPhoto(String photo) {
+		Photo = photo;
+	}
+	public String getNotes() {
+		return Notes;
+	}
+	public void setNotes(String notes) {
+		Notes = notes;
+	}
+	public int getId() {
+		return EmployeeID;
+	}
+	public void setId(int employeeID) {
+		EmployeeID = employeeID;
+	}
 	public String getFirstName() {
 		return firstName;
 	}
