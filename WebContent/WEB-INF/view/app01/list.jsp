@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="my" tagdir="/WEB-INF/tags/app01" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,11 +13,28 @@
 <title>Insert title here</title>
 </head>
 <body>
+	
+	<my:navBar current="list"/>
+
 	<div class="container">
 		<div class="row">
 			<div class="col">
 				<h1>글 목록</h1>
+				<c:if test="${not empty param.success }">
+					<c:if test = "${param.success }">
+						<div class="alert aler-primary">
+							게시물이 삭제되었습니다.
+						</div>
+					</c:if>
+					
+					<c:if test="${not param.success }">
+						<div class= "alert alert-danger">
+							게시물이 문제가발생하였습니다.
+						</div>
+					</c:if>
 				
+				
+				</c:if>
 				<!-- table.table>thead>tr>th*3^^tbody -->
 				<table class="table">
 					<thead>
@@ -31,14 +49,15 @@
 							<tr>
 								<td>${board.id }</td>
 								<td>
-									<c:url value="/board/get" var = "getUrl">
+													
+									<c:url value="/board/get" var="getUrl">
 										<c:param name="id" value="${board.id }"></c:param>
 									</c:url>
+									
 									<a href="${getUrl }">
 										${board.title }
 									</a>
 								</td>
-								
 								<td>${board.prettyInserted }</td>
 							</tr>
 						</c:forEach>
@@ -49,4 +68,3 @@
 	</div>
 </body>
 </html>
-
