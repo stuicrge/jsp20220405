@@ -11,21 +11,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import app01.dao.BoardDao;
-import app01.dto.BoardDto;
+import app01.dao.ReplyDao;
+import app01.dto.ReplyDto;
 
 /**
- * Servlet implementation class BoardInsertServlet
+ * Servlet implementation class ReplyInsertServlet
  */
-@WebServlet("/board/insert")
-public class BoardInsertServlet extends HttpServlet {
+@WebServlet("/reply/insert")
+public class ReplyInsertServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private DataSource ds;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public BoardInsertServlet() {
+	public ReplyInsertServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -42,8 +42,8 @@ public class BoardInsertServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String path = "/WEB-INF/view/app01/insert.jsp";
-		request.getRequestDispatcher(path).forward(request, response);
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -52,25 +52,33 @@ public class BoardInsertServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String content = request.getParameter("replyContent");
+		String boardId = request.getParameter("boardId");
+		ReplyDto replyDto = new ReplyDto();
+		replyDto.setContent(content);
+		replyDto.setBoardId(Integer.parseInt(boardId));
 
-		//request 파라미터 가공
-		String title = request.getParameter("title");
-		String body = request.getParameter("body");
-		BoardDto dto = new BoardDto();
-		dto.setBody(body);
-		dto.setTitle(title);
-		//db에 입력
-		try (Connection con = ds.getConnection();) {
-			BoardDao dao = new BoardDao();
-			boolean success = dao.insert(con, dto);
+		ReplyDao dao = new ReplyDao();
+		boolean success = false;
+		try (Connection con = ds.getConnection()) {
+
+			success = dao.insert(con, replyDto);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		String location = request.getContextPath() + "/board/get?id="+replyDto.getBoardId(); 
+		
+		if (success) {
+			
+			location+="&rs=true";
+			
+		} else {
+			location += "&rs=false";
 
-		// forward/redirect
-		String path = request.getContextPath() + "/board/get?id="+dto.getId();
-		response.sendRedirect(path);
+		}
+		response.sendRedirect(location);
 	}
 
 }

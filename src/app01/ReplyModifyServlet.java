@@ -2,8 +2,6 @@ package app01;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -13,73 +11,65 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import app01.dao.BoardDao;
+
 import app01.dao.ReplyDao;
-import app01.dto.BoardDto;
 import app01.dto.ReplyDto;
 
 /**
- * Servlet implementation class BoardGetServlet
+ * Servlet implementation class ReplyModifyServlet
  */
-@WebServlet("/board/get")
-public class BoardGetServlet extends HttpServlet {
+@WebServlet("/reply/modify")
+public class ReplyModifyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private DataSource ds;
-	
+	private DataSource ds; 
     /**
      * @see HttpServlet#HttpServlet()
      */
-	
-    public BoardGetServlet() {
+    public ReplyModifyServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
     
-	@Override
+    @Override
 	public void init() throws ServletException {
 		ServletContext application = getServletContext();
 		this.ds = (DataSource) application.getAttribute("dbpool");
 	}
-	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//request parameter 가공
-		int id = Integer.parseInt(request.getParameter("id"));
-		//businees logic
-		try(Connection con = ds.getConnection()){
-			
-			//게시물 본문
-			BoardDao dao = new BoardDao();
-			BoardDto board = dao.get(con,id);
-			
-			//댓글 본문
-			ReplyDao replyDao = new ReplyDao();
-			List<ReplyDto> replyList = replyDao.list(con,id);
-			
-
-			// add attribute
-			request.setAttribute("board", board);
-			request.setAttribute("replyList", replyList);
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		//forward redirect
-		String path = "/WEB-INF/view/app01/get.jsp";
-		request.getRequestDispatcher(path).forward(request, response);
+		// TODO Auto-generated method stub<input type="hidden" name="replyId" value="${reply.id }" />
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	
 	}
-
-	/**
+	/**}
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String boardIdStr =request.getParameter("boardId");
+		String replyIdStr= request.getParameter("replyId");
+		String content = request.getParameter("replyContent");
+		int ridStr = Integer.parseInt(replyIdStr);
+		int bidStr = Integer.parseInt(boardIdStr);
+		
+		
+		ReplyDto dto = new ReplyDto();
+		dto.setBoardId(bidStr);
+		dto.setContent(content);
+		dto.setId(ridStr);
+		
+		ReplyDao dao = new ReplyDao();
+		
+		try(Connection con = ds.getConnection()){
+			dao.update(con,dto);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		String location = request.getContextPath() + "/board/get"+"?"+"id=" + boardIdStr;
+		response.sendRedirect(location);
+		
 	}
 
 }
