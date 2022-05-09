@@ -50,7 +50,10 @@ public class BoardDao {
 
 		List<BoardDto> list = new ArrayList<>();
 
-		String sql = "SELECT id, title , inserted FROM Board ORDER BY id DESC";
+		String sql = "SELECT b.id, b.title , b.inserted, COUNT(r.id) numOfReply "
+				+ "FROM Board b LEFT JOIN Reply r ON b.id = r.board_id "
+				+ "GROUP BY b.id "
+				+ "ORDER BY b.id DESC";
 		
 		
 		try (Statement stmt = (Statement) con.createStatement(); 
@@ -61,7 +64,7 @@ public class BoardDao {
 				board.setId(rs.getInt(1));
 				board.setTitle(rs.getString(2));
 				board.setInserted(rs.getTimestamp(3).toLocalDateTime());
-
+				board.setNumOfReply(rs.getInt(4));
 				list.add(board);
 			}
 
@@ -74,10 +77,10 @@ public class BoardDao {
 	
 	
 	public BoardDto get(Connection con, int id) {
-		String sql = "SELECT id, title, body, inserted "
-				+" FROM Board "
-				+"WHERE id= ? ";
-		
+		String sql = "SELECT  b.*, COUNT(r.id) numOfReply "
+				+" FROM Board b JOIN Reply r "
+				+" WHERE b.id = ? ";
+				
 		try(PreparedStatement stmt = con.prepareStatement(sql);){
 				
 			stmt.setInt(1, id);
